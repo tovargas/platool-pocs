@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  nextcloud-db:
+    image: mariadb:10.7.3
+    container_name: nextcloud-db
+    networks:
+      - nextcloud_network
+    restart: unless-stopped
+    volumes:
+      - ./nextcloud/db:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - MYSQL_DATABASE=nextcloud
+    env_file:
+      - db.env
+  nextcloud:
+    image: nextcloud:23.0.3-apache
+    container_name: nextcloud
+    ports:
+      - "8080:80"
+    networks:
+      - nextcloud_network
+    depends_on:
+      - nextcloud-db
+    restart: unless-stopped
+    volumes:
+      - nextcloud:/var/www/html # Main folder, needed for updating
+      - ./app/config:/var/www/html/config # installed / modified apps
+      - ./app/custom_apps:/var/www/html/custom_apps # local configuration
+      - ./app/data:/var/www/html/data # the actual data of your Nextcloud
+      - ./app/themes:/var/www/html/themes # theming/branding
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - MYSQL_HOST=nextcloud-db
+      - MYSQL_DATABASE=nextcloud
+      # - NEXTCLOUD_ADMIN_USER=admin
+      # - NEXTCLOUD_ADMIN_PASSWORD=admin
+      # - POSTGRES_HOST=
+      # - POSTGRES_DB=
+      # - POSTGRES_USER=
+      # - POSTGRES_PASSWORD=
+      # - VIRTUAL_HOST=nextcloud.YOUR-DOMAIN
+      # - LETSENCRYPT_HOST=nextcloud.YOUR-DOMAIN
+      # - LETSENCRYPT_EMAIL=YOUR-EMAIL
+    env_file:
+      - db.env
+volumes:
+  nextcloud:
+  db:
+
+networks:
+  nextcloud_network:
