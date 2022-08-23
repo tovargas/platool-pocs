@@ -26,6 +26,7 @@ Create a sandbox instance that you can use to test configuration changes in a lo
 ### Use Cases
 
 - [Geo Redirect Use Case example](https://github.com/akamai/edgeworkers-examples/tree/master/edgecompute/examples/traffic-routing/redirect-geo)
+- [response-manipulation-stream](https://github.com/akamai/edgeworkers-examples/tree/master/edgecompute/examples/stream/response-manipulation)
 - [This example](https://github.com/akamai/edgeworkers-examples/tree/master/edgecompute/examples/typescript) demonstrates how to build an EdgeWorker written in TypeScript.
 
 ### Add EW on Akamai
